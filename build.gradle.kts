@@ -60,4 +60,14 @@ tasks {
     jar {
         from (shade.map { if (it.isDirectory) it else zipTree(it) })
     }
+
+    create<Copy>("copyToServer") {
+        from(jar)
+        val plugins = File(rootDir, ".server/plugins")
+        if (File(shade.artifacts.files.asPath).exists()) {
+            into(File(plugins, "update"))
+        } else {
+            into(plugins)
+        }
+    }
 }
