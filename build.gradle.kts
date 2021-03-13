@@ -61,6 +61,7 @@ tasks {
         from (shade.map { if (it.isDirectory) it else zipTree(it) })
     }
 
+    // From monun/tap-sample-plugin
     create<Copy>("copyToServer") {
         from(jar)
         val plugins = File(rootDir, ".server/plugins")
