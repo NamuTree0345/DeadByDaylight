@@ -30,6 +30,7 @@ class StartCommand : CommandExecutor {
             }
 
             remainHumans = Bukkit.getOnlinePlayers().size - 1
+            Bukkit.broadcastMessage("${ChatColor.RED}인식된 플레이어 수: $remainHumans")
 
             val plrs = Bukkit.getOnlinePlayers().toTypedArray()
             killer = plrs[Random().nextInt(plrs.size)]
