@@ -13,7 +13,7 @@ class KillListener : Listener {
     fun onKill(event: PlayerDeathEvent) {
         if(gameStarted) {
             if (event.entity.killer == killer) {
-                remainHumans.minus(1)
+                remainHumans -= 1
                 event.deathMessage = "${ChatColor.RED}살인마가 ${event.entity.name}를 죽였습니다. 남은 인간 수: $remainHumans"
                 event.entity.gameMode = GameMode.SPECTATOR
                 if(remainHumans == 0) {
