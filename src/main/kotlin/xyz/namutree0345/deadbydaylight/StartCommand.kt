@@ -19,7 +19,7 @@ class StartCommand : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         broadcastTitle("${ChatColor.RED}Dead by Daylight", "", 60, 180, 180)
         val scheduleId: Int?
-        var num = 3
+        var num = 120
         scheduleId = Bukkit.getScheduler().scheduleSyncRepeatingTask(JavaPlugin.getPlugin(DeadByDaylight::class.java), Runnable {
             broadcastTitle("${ChatColor.RED}${num}초 남음", "", 0, 60, 0)
             num--
@@ -43,8 +43,8 @@ class StartCommand : CommandExecutor {
                     broadcastTitle("${ChatColor.GREEN}생존자 승리", "", 60, 180, 180)
                     gameStarted = false
                 }
-            }, 20 * 5)
-        }, 20 * 3)
+            }, getMinuteAsTick(5, 0))
+        }, getMinuteAsTick(0, 120))
         return true
     }
 
@@ -54,4 +54,8 @@ fun broadcastTitle(title: String, subtitle: String, fadeIn: Int, stay: Int, fade
     for (player in Bukkit.getOnlinePlayers()) {
         player.sendTitle(title, subtitle, fadeIn, stay, fadeOut)
     }
+}
+
+fun getMinuteAsTick(minute: Long, second: Long) : Long {
+    return (minute * (20 * 60)) + second * 20
 }
