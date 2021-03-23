@@ -13,7 +13,7 @@ import java.util.*
 
 var gameStarted = false
 var killer: Player? = null
-var beforeStart: Collection<Player>? = null
+var remainHumans = 0
 
 class StartCommand : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
@@ -29,7 +29,7 @@ class StartCommand : CommandExecutor {
                 Bukkit.getScheduler().cancelTask(scheduleId)
             }
 
-            beforeStart = Bukkit.getOnlinePlayers()
+            remainHumans = Bukkit.getOnlinePlayers().size - 1
 
             val plrs = Bukkit.getOnlinePlayers().toTypedArray()
             killer = plrs[Random().nextInt(plrs.size)]
@@ -37,14 +37,20 @@ class StartCommand : CommandExecutor {
             Bukkit.broadcastMessage("${ChatColor.RED}살인마: ${killer?.name}")
             gameStarted = true
             broadcastTitle("${ChatColor.RED}시작!", "", 60, 180, 180)
+            Bukkit.getScheduler().scheduleSyncDelayedTask(JavaPlugin.getPlugin(DeadByDaylight::class.java), Runnable {
+                if(remainHumans != 0) {
+                    broadcastTitle("${ChatColor.GREEN}생존자 승리", "", 60, 180, 180)
+                    gameStarted = false
+                }
+            }, (20 * 60) * 1)
         }, 20 * 3)
         return true
     }
 
-    private fun broadcastTitle(title: String, subtitle: String, fadeIn: Int, stay: Int, fadeOut: Int) {
-        for (player in Bukkit.getOnlinePlayers()) {
-            player.sendTitle(title, subtitle, fadeIn, stay, fadeOut)
-        }
-    }
+}
 
+fun broadcastTitle(title: String, subtitle: String, fadeIn: Int, stay: Int, fadeOut: Int) {
+    for (player in Bukkit.getOnlinePlayers()) {
+        player.sendTitle(title, subtitle, fadeIn, stay, fadeOut)
+    }
 }
