@@ -6,6 +6,7 @@ class DeadByDaylight : JavaPlugin() {
 
     override fun onEnable() {
         getCommand("startdbd")?.setExecutor(StartCommand())
+        server.pluginManager.registerEvents(KillListener(), this)
     }
 
 }

@@ -2,21 +2,24 @@ package xyz.namutree0345.deadbydaylight
 
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
+import org.bukkit.Material
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.*
 
 var gameStarted = false
 var killer: Player? = null
+var beforeStart: Collection<Player>? = null
 
 class StartCommand : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         broadcastTitle("${ChatColor.RED}Dead by Daylight", "", 60, 180, 180)
         val scheduleId: Int?
-        var num = 120
+        var num = 3
         scheduleId = Bukkit.getScheduler().scheduleSyncRepeatingTask(JavaPlugin.getPlugin(DeadByDaylight::class.java), Runnable {
             broadcastTitle("${ChatColor.RED}${num}초 남음", "", 0, 60, 0)
             num--
@@ -26,12 +29,15 @@ class StartCommand : CommandExecutor {
                 Bukkit.getScheduler().cancelTask(scheduleId)
             }
 
+            beforeStart = Bukkit.getOnlinePlayers()
+
             val plrs = Bukkit.getOnlinePlayers().toTypedArray()
             killer = plrs[Random().nextInt(plrs.size)]
+            killer?.inventory?.addItem(ItemStack(Material.DIAMOND_AXE))
             Bukkit.broadcastMessage("${ChatColor.RED}살인마: ${killer?.name}")
             gameStarted = true
             broadcastTitle("${ChatColor.RED}시작!", "", 60, 180, 180)
-        }, 20 * 120)
+        }, 20 * 3)
         return true
     }
 
