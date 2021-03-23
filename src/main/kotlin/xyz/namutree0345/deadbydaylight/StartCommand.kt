@@ -43,7 +43,7 @@ class StartCommand : CommandExecutor {
                     broadcastTitle("${ChatColor.GREEN}생존자 승리", "", 60, 180, 180)
                     gameStarted = false
                 }
-            }, (20 * 60) * 1)
+            }, 20 * 5)
         }, 20 * 3)
         return true
     }
