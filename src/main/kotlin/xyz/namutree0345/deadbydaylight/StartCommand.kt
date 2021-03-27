@@ -47,8 +47,8 @@ class StartCommand : CommandExecutor {
             val i = Bukkit.getScheduler().scheduleSyncRepeatingTask(JavaPlugin.getPlugin(DeadByDaylight::class.java), Runnable {
                 for (player in Bukkit.getOnlinePlayers()) {
                     player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent("$t"))
-                    t -= 1
                 }
+                t -= 1
             }, 0, 20)
             Bukkit.getScheduler().scheduleSyncDelayedTask(JavaPlugin.getPlugin(DeadByDaylight::class.java), Runnable {
                 Bukkit.getScheduler().cancelTask(i)
